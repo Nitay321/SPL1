@@ -1,223 +1,330 @@
-# DJ Session Management System - README
+# SPL Project 1 — Settlement Simulation Engine
 
-## Project Overview
-This is a C++ project that implements a DJ Session Management system with support for audio track management, playlists, caching, and mixing operations.
+[![C++ Standard](https://img.shields.io/badge/C%2B%2B-11%2F14-blue.svg?style=flat&logo=c%2B%2B)](https://en.cppreference.com/)
+[![Build System](https://img.shields.io/badge/Build-GNU%20Make-orange.svg?style=flat&logo=gnu)](https://www.gnu.org/software/make/)
+[![Design Patterns](https://img.shields.io/badge/Patterns-Command%20%7C%20Strategy-lightgrey.svg?style=flat)](https://refactoring.guru/design-patterns)
+[![Memory Management](https://img.shields.io/badge/Safety-RAII%20%7C%20Rule%20of%205-green.svg?style=flat)](https://en.cppreference.com/w/cpp/language/rule_of_three)
+[![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](LICENSE)
 
-## Project Structure
-```
-Skeleton/
-├── bin/                    # Compiled executables and configuration files
-│   └── dj_config.txt      # Configuration file for DJ settings
-├── include/               # Header files (.h)
-├── src/                   # Source files (.cpp)
-├── .devcontainer/         # Development container configuration
-├── Makefile              # Build system configuration
-└── README.md             # This file
-```
+> 📚 **Part of a 3-project series** from the Systems Programming Lab course at **Ben-Gurion University of the Negev**
+> [SPL1 — Settlement Simulation](https://github.com/Nitay321/SPL25-Assignment1) · [SPL2 — Concurrent Microservices](https://github.com/Nitay321/SPL_project_2) · [SPL3 — Real-Time Messaging System](https://github.com/Nitay321/SPL3)
 
-## Prerequisites
-
-### Option 1: Using Dev Container (Recommended)
-This project includes a `.devcontainer` configuration that provides a complete development environment with all necessary tools pre-installed. If you're using Visual Studio Code with the Dev Containers extension, simply open the project and it will set everything up for you.
-
-### Option 2: University Lab Computers
-All required tools are pre-installed on the lab computers at BGU. You can use those directly without any setup.
-
-### Option 3: Local Installation
-If working on your own machine, you'll need:
-- A C++ compiler (g++ recommended)
-- Make build tool
-- Linux/Unix environment (or WSL on Windows)
-- Optional: valgrind (for memory leak detection)
-- Optional: gdb (for debugging)
-
-You can install these on Ubuntu/Debian with:
-```bash
-make install-deps
-```
-
-## Getting Started
-
-### 1. Getting the Project Files
-
-This project is hosted in a **Git repository**. Think of a Git repository (or "repo") as a shared folder in the cloud that contains all the project files and tracks their history.
-
-#### What is Git?
-Git is a version control system - like a powerful "undo" system for code. It lets you:
-- Download the project files (called "cloning")
-- Get updates if the instructors fix bugs or add clarifications (called "pulling")
-- Track what you've changed
-
-#### Getting the Code (Cloning)
-To get a copy of the project on your computer, you need to **clone** the repository. You'll receive a repository URL from your instructor (it looks like `https://github.com/...`).
-
-**Using VS Code**:
-1. Press `Ctrl+Shift+P` to open the Command Palette
-2. Type "Git: Clone" and select it
-3. Paste the repository URL provided by your instructor
-4. Choose where to save the project on your computer
-5. Click "Open" when prompted
-
-You only need to clone once! After that, you have all the files locally.
-
-### 2. Understanding the Build System
-This project uses **Make**, a build automation tool that compiles your code. The `Makefile` contains instructions for how to build the project.
-
-Think of Make as a recipe book for building your program. Instead of manually compiling each file, Make reads the `Makefile` and knows exactly which files to compile and in what order.
-
-### 3. Building the Project
-
-To compile the entire project, open a terminal in the `Skeleton` directory and run:
-```bash
-make
-```
-
-This command will:
-- Create the `bin/` directory if it doesn't exist
-- Compile all `.cpp` files from the `src/` directory
-- Link them together
-- Create an executable called `dj_manager` in the `bin/` directory
-
-For a debug build (useful when developing):
-```bash
-make debug
-```
-
-For an optimized release build:
-```bash
-make release
-```
-
-### 4. Cleaning Build Files
-
-To remove all compiled files and start fresh:
-```bash
-make clean
-```
-
-### 5. Running the Program
-
-After building, the program requires both the `-I` (interactive) and `-A` (all playlists) flags:
-
-**Running All Playlists**:
-```bash
-./bin/dj_manager -I -A
-```
-This runs the system in automatic mode, processing all available playlists sequentially.
-
-Or use the convenient test target:
-```bash
-make test
-```
-
-**Note**: The `-I` flag enables interactive mode, while the `-A` flag processes all playlists automatically. Both flags are required for proper operation.
-
-### 6. Checking for Memory Leaks
-
-To run the program with valgrind memory leak detection:
-```bash
-make test-leaks
-```
-
-## Main Components
-
-- **AudioTrack**: Base class for audio files
-- **MP3Track/WAVTrack**: Specific audio format implementations
-- **Playlist**: Manages collections of tracks
-- **LRUCache**: Implements Least Recently Used caching strategy
-- **CacheSlot**: Individual cache entry management
-- **DJSession**: Main session management
-- **DJControllerService**: Handles DJ control operations
-- **DJLibraryService**: Manages music library
-- **MixingEngineService**: Handles audio mixing operations
-- **ConfigurationManager**: Manages application settings
-- **SessionFileParser**: Parses session configuration files
-
-## Configuration
-
-Edit `bin/dj_config.txt` to modify DJ session settings before running the program.
-
-## Common Make Commands
-
-- `make` or `make all` - Build the entire project
-- `make debug` - Build with debug information for development
-- `make release` - Build optimized version for production
-- `make clean` - Remove all compiled files
-- `make test` - Build and run the program
-- `make test-leaks` - Run with valgrind to check for memory leaks
-- `make install-deps` - Install required development tools (Ubuntu/Debian)
-- `make help` - Display all available commands with descriptions
-
-## Student Workflow
-
-The recommended workflow for completing this assignment:
-
-1. **Build with debug info**: `make debug`
-2. **Run the program**: `make test`
-3. **Find and fix TODOs** in the code
-4. **Check for memory leaks**: `make test-leaks`
-5. **Repeat** steps 3-4 until all issues are resolved!
-
-## Troubleshooting
-
-**Build Errors**: If you get compilation errors:
-1. Make sure all required files are present in `src/` and `include/`
-2. Check that your compiler is properly installed: `g++ --version`
-3. Try running `make clean` first, then `make`
-4. Read the error messages carefully - they usually point to the problem
-
-**Permission Errors**: If you can't execute the program:
-```bash
-chmod +x ./bin/dj_manager
-```
-
-**"Command not found" errors**: 
-- If `make` is not found, you need to install it (or use the dev container/lab computers)
-- If `valgrind` is not found for memory testing, run `make install-deps`
-
-## Development Tips
-
-1. After modifying any `.cpp` or `.h` file, run `make` to rebuild
-2. The build system automatically detects which files changed and only recompiles those
-3. Always test after making changes by rebuilding and running the program
-4. Use `make debug` during development for better error messages
-5. Run `make test-leaks` frequently to catch memory issues early
-
-## Getting Updates from Instructors
-
-During the assignment's period, your instructors may push updates, bug fixes, or clarifications to the assignment repository. While we hope there won't be any updates needed, it's good to know how to get them just in case.
-
-### Checking for and Getting Updates
-
-#### Using VS Code Interface:
-1. Open the Source Control panel (click the branch icon in the left sidebar or press `Ctrl+Shift+G`)
-2. Click the "..." menu (three dots) at the top
-3. Select **"Fetch"** to check if updates are available (this doesn't change your files yet)
-4. If updates are available, select **"Pull"** to download and apply them
-
-#### Using Terminal:
-Open the terminal (`` Ctrl+` ``) and run:
-```bash
-# Check if there are any updates
-git fetch
-
-# If updates exist, download and apply them
-git pull
-```
-
-### When to Check for Updates
-- At the start of each work session (just to be safe)
-- If your instructor announces an update via email or the course website
-- If you encounter unexpected errors that classmates don't have
-
-### What if There Are Conflicts?
-If you've modified files and there are updates, Git will usually merge them automatically. However, if there's a conflict (you and the instructor changed the same lines), Git will ask for help. In this case:
-1. Don't panic - this is rare
-2. Contact your course instructor or TA
-3. They'll help you resolve the conflict
-
-**Note**: You don't need to commit, push, or create branches for this assignment. Your main interaction with Git is just cloning once and occasionally pulling updates. Focus on writing your C++ code!
+An object-oriented discrete simulation engine written in modern C++, modeling municipal infrastructure development across tiered settlements (Villages, Cities, Metropolises). Implements the **Strategy** and **Command** design patterns for pluggable construction policies, transactional action execution, and full in-memory state snapshot and rollback mechanics.
 
 ---
 
-For questions or issues, please contact the TA in charge on the assignment.
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Architecture & Design Patterns](#-architecture--design-patterns)
+  - [Domain Model & Class Hierarchy](#domain-model--class-hierarchy)
+  - [Strategy Pattern: Selection Policies](#strategy-pattern-selection-policies)
+  - [Command Pattern: Action System](#command-pattern-action-system)
+- [Memory Management & Rule of Five](#-memory-management--rule-of-five)
+- [System Workflow](#-system-workflow)
+- [Project Structure](#-project-structure)
+- [Building and Running](#-building-and-running)
+  - [Prerequisites](#prerequisites)
+  - [Compilation](#compilation)
+  - [Execution](#execution)
+  - [Memory Verification (Valgrind)](#memory-verification-valgrind)
+- [Interactive Command Reference](#-interactive-command-reference)
+- [Configuration Format](#-configuration-format)
+- [License](#-license)
+
+---
+
+## 🌟 Overview
+
+The **Settlement Simulation Engine** simulates municipal expansion across heterogeneous settlements (Villages, Cities, Metropolises). Each settlement manages one or more development plans governed by pluggable selection policies. As the simulation steps forward, plans evaluate available facility blueprints, schedule constructions, progress active build queues, and accumulate holistic regional metrics across **Life Quality**, **Economy**, and **Environment**.
+
+The engine is engineered with strict adherence to systems programming best practices: complete resource encapsulation via RAII, explicit copy/move semantics across polymorphic hierarchies, and non-trivial memory-safe backup and restoration workflows.
+
+---
+
+## ⚡ Key Features
+
+- **Tiered Municipal Hierarchy:**
+  - `Village`: Limited infrastructure capacity (maximum 1 concurrent plan).
+  - `City`: Moderate infrastructure capacity (maximum 2 concurrent plans).
+  - `Metropolis`: High-density capacity (maximum 3 concurrent plans).
+
+- **Multi-Metric Facility Lifecycle:**
+  - Facilities feature realistic build durations, construction states (`UNDER_CONSTRUCTIONS`, `OPERATIONAL`), and multidimensional impact scores (`Life Quality`, `Economy`, `Environment`).
+  - Separation between immutable catalog specifications (`FacilityType`) and active municipal instances (`Facility`).
+
+- **Dynamic Strategy Selection Policies:**
+  - Four distinct algorithms governing facility selection for construction plans, fully swappable at runtime without interrupting active queues.
+
+- **Transactional Command Execution:**
+  - Decoupled commands encapsulating simulation state modifications, parameter parsing, error logging, and formatted output generation.
+
+- **Full Simulation Snapshot & Rollback:**
+  - Deep-copy state backup (`backup`) and atomic rollback (`restore`), enabling checkpointing and non-destructive branch testing.
+
+- **Zero-Leak Memory Safety:**
+  - Strict adherence to the **Rule of Five** (Destructor, Copy Constructor, Copy Assignment, Move Constructor, Move Assignment) for robust pointer ownership and deep cloning.
+
+---
+
+## 🏗️ Architecture & Design Patterns
+
+The engine's architecture emphasizes decoupling, open-closed extensibility, and explicit memory ownership.
+
+```mermaid
+classDiagram
+    class Simulation {
+        -bool isRunning
+        -int planCounter
+        -vector~BaseAction*~ actionsLog
+        -vector~Plan~ plans
+        -vector~Settlement*~ settlements
+        -vector~FacilityType~ facilitiesOptions
+        +start()
+        +step()
+        +addPlan(Settlement*, SelectionPolicy*)
+        +backup()
+        +restore()
+    }
+
+    class Settlement {
+        -string name
+        -SettlementType type
+        +getName() string
+        +getType() SettlementType
+    }
+
+    class Plan {
+        -int plan_id
+        -Settlement* settlement
+        -SelectionPolicy* selectionPolicy
+        -PlanStatus status
+        -vector~Facility*~ underConstruction
+        -vector~Facility*~ facilities
+        -int life_quality_score
+        -int economy_score
+        -int environment_score
+        +step()
+        +setSelectionPolicy(SelectionPolicy*)
+    }
+
+    class SelectionPolicy {
+        <<interface>>
+        +selectFacility(vector~FacilityType~) FacilityType*
+        +clone()* SelectionPolicy*
+    }
+
+    class BaseAction {
+        <<interface>>
+        -ActionStatus status
+        -string errorMsg
+        +act(Simulation&)*
+        +clone()* BaseAction*
+    }
+
+    Simulation "1" *-- "many" Plan
+    Simulation "1" *-- "many" Settlement
+    Simulation "1" *-- "many" BaseAction
+    Plan "1" o-- "1" Settlement
+    Plan "1" *-- "1" SelectionPolicy
+    Plan "1" *-- "many" Facility
+```
+
+---
+
+### Strategy Pattern: Selection Policies
+
+Facility selection logic is isolated into interchangeable strategy objects deriving from `SelectionPolicy`. This allows plans to adjust their growth trajectories on-the-fly via the `ChangePlanPolicy` action.
+
+| Policy | Strategy Identifier | Evaluation Metric | Behavior |
+| :--- | :--- | :--- | :--- |
+| **Naive Selection** | `nve` | Sequential (Round-Robin) | Selects the next facility option in cyclic order, irrespective of current score profiles. |
+| **Balanced Selection** | `bal` | Metric Equilibrium | Selects facilities that minimize the disparity between `Life Quality`, `Economy`, and `Environment` scores. |
+| **Economy Selection** | `eco` | Economic Maximization | Prioritizes facilities yielding the highest economy boost per construction cycle. |
+| **Sustainability Selection** | `env` | Environmental Protection | Exclusively selects facilities with positive environmental footprints, mitigating degradation. |
+
+Each policy implements a virtual `clone()` method to facilitate polymorphic deep copying when plans or simulation states are duplicated.
+
+---
+
+### Command Pattern: Action System
+
+All user interactions and simulation commands inherit from `BaseAction`, encapsulating operational logic, validation, error diagnostics, and history logging.
+
+- **`AddSettlement`**: Registers a new municipal node with predefined capacity boundaries.
+- **`AddFacility`**: Injects new architectural specifications into the available blueprints catalog.
+- **`AddPlan`**: Links a settlement with an initial selection policy to instantiate a construction pipeline.
+- **`SimulateStep`**: Advances global simulation time, ticking construction timers and triggering policy decisions.
+- **`ChangePlanPolicy`**: Dynamically replaces an active plan's selection algorithm at runtime.
+- **`PrintPlanStatus`**: Reports granular plan status, active construction pipelines, and composite scores.
+- **`PrintActionsLog`**: Dumps an audit trail of all executed commands and their completion statuses (`COMPLETED` / `ERROR`).
+- **`BackupSimulation`**: Creates a full in-memory snapshot of the simulation state.
+- **`RestoreSimulation`**: Rolls back the entire simulation state to the latest valid backup.
+
+---
+
+## 🛡️ Memory Management & Rule of Five
+
+Because the simulation manages dynamic polymorphic objects (`SelectionPolicy*`, `Settlement*`, `Facility*`, `BaseAction*`), manual memory management is handled with surgical precision to ensure leak-free operation and pointer safety:
+
+1. **Polymorphic Deep Copying:**
+   Abstract classes (`SelectionPolicy`, `BaseAction`) expose virtual `clone()` methods, avoiding object slicing during vector reallocations and snapshot operations.
+
+2. **The Rule of Five:**
+   State-bearing classes managing raw pointers (`Simulation`, `Plan`, and concrete policies) implement:
+   - **Destructor:** Clean traversal and reclamation of owned heap objects.
+   - **Copy Constructor:** Deep replication of dynamic resources.
+   - **Copy Assignment Operator (`operator=`):** Exception-safe copy-and-swap idiom to avoid memory leaks during assignment.
+   - **Move Constructor:** Resource theft without unnecessary allocations.
+   - **Move Assignment Operator:** Rapid ownership transfer and cleanup of displaced pointers.
+
+3. **Safe Snapshot / Rollback Mechanism:**
+   The `BackupSimulation` and `RestoreSimulation` actions clone the entire heap graph of the running simulation into a standalone backup pointer (`backupSimulation`), ensuring that subsequent modifications do not corrupt the restore point.
+
+---
+
+## 🔄 System Workflow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CLI as Terminal / Script
+    participant Sim as Simulation Engine
+    participant Plan as Plan Instance
+    participant Policy as SelectionPolicy
+    participant Fac as Facility Pipeline
+
+    CLI->>Sim: step (SimulateStep)
+    Sim->>Plan: step()
+    alt Under Construction Capacity Available
+        Plan->>Policy: selectFacility(facilityOptions)
+        Policy-->>Plan: Chosen FacilityType
+        Plan->>Fac: Instantiate Facility(UNDER_CONSTRUCTIONS)
+    end
+    Plan->>Fac: Decrement Construction Timers
+    opt Timer Reaches 0
+        Fac-->>Plan: State -> OPERATIONAL
+        Plan->>Plan: Update Life Quality / Economy / Env Scores
+    end
+    Sim-->>CLI: Step Completed
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+.
+├── bin/                       # Compiled executable binaries
+├── include/                   # Header declarations (.h)
+│   ├── Action.h               # BaseAction and concrete command declarations
+│   ├── Facility.h             # Facility and FacilityType models
+│   ├── Plan.h                 # Construction plan and lifecycle manager
+│   ├── SelectionPolicy.h      # Strategy interface and concrete selection policies
+│   ├── Settlement.h           # Settlement entity and tier definitions
+│   └── Simulation.h           # Central simulation controller and state holder
+├── src/                       # Source code implementations (.cpp)
+│   ├── Action.cpp             # Command execution logic and validation
+│   ├── Facility.cpp           # Facility instantiation and state transitions
+│   ├── Plan.cpp               # Planning progress, score aggregation, deep copies
+│   ├── SelectionPolicy.cpp    # Implementation of selection algorithms
+│   ├── Settlement.cpp         # Settlement behavior and capacity verification
+│   ├── Simulation.cpp         # Engine loop, config parser, backup/restore
+│   └── main.cpp               # Entry point and interactive command loop
+├── config_input.txt           # Sample initial configuration file
+├── makefile                   # Build configuration with automated dependency tracking
+└── README.md                  # System documentation
+```
+
+---
+
+## 🚀 Building and Running
+
+### Prerequisites
+
+- **Compiler:** GCC / G++ supporting C++11 or higher (C++14 recommended)
+- **Build Tool:** GNU Make
+- **Debugger / Profiler (Optional):** Valgrind (Linux / WSL)
+
+### Compilation
+
+Compile the project using the optimized Makefile:
+
+```bash
+# Build the simulation executable into bin/
+make
+
+# Clean build artifacts (object files and binaries)
+make clean
+```
+
+### Execution
+
+Launch the compiled executable by providing a path to an initial configuration file:
+
+```bash
+./bin/simulation config_input.txt
+```
+
+### Memory Verification (Valgrind)
+
+To confirm zero leaks and zero memory errors across complex action chains:
+
+```bash
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./bin/simulation config_input.txt
+```
+
+Expected output:
+```text
+==XXXXX== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==XXXXX== All heap blocks were freed -- no leaks are possible
+```
+
+---
+
+## ⌨️ Interactive Command Reference
+
+Once the simulation starts, commands can be entered via standard input (`stdin`):
+
+| Command Syntax | Arguments | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `step` | `<number_of_steps>` | Advances the simulation by $N$ tick cycles. | `step 3` |
+| `plan` | `<settlement_name> <policy>` | Registers a new plan for an existing settlement. | `plan Metropolis_A bal` |
+| `settlement` | `<name> <type>` | Adds a new settlement (`0`=Village, `1`=City, `2`=Metropolis). | `settlement Zion 2` |
+| `facility` | `<name> <cat> <cost> <life> <eco> <env>` | Adds a new facility blueprint to the catalog. | `facility SolarPlant 1 100 2 5 10` |
+| `planStatus` | `<plan_id>` | Displays status, active builds, and scores for a plan. | `planStatus 0` |
+| `changePolicy` | `<plan_id> <new_policy>` | Switches the policy of a plan (`nve`, `bal`, `eco`, `env`). | `changePolicy 0 eco` |
+| `log` | *none* | Prints chronological log of executed actions and statuses. | `log` |
+| `backup` | *none* | Creates an in-memory snapshot of the simulation state. | `backup` |
+| `restore` | *none* | Restores the engine state from the last backup. | `restore` |
+| `close` | *none* | Gracefully terminates the engine and frees all allocated memory. | `close` |
+
+---
+
+## ⚙️ Configuration Format
+
+The configuration file (e.g., `config_input.txt`) bootstraps the simulation world before the interactive loop begins:
+
+```text
+# Define Settlements: settlement <name> <type: 0|1|2>
+settlement Greenfield 0
+settlement Riverdale 1
+settlement MetropolisPrime 2
+
+# Define Facilities: facility <name> <category> <price> <lifeQuality> <economy> <environment>
+facility Park 0 50 10 0 5
+facility Factory 1 150 -5 20 -10
+facility WaterTreatment 2 100 5 5 15
+
+# Define Initial Plans: plan <settlement_name> <policy: nve|bal|eco|env>
+plan Greenfield nve
+plan Riverdale bal
+plan MetropolisPrime eco
+```
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
