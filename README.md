@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](LICENSE)
 
 > 📚 **Part of a 3-project series** from the Systems Programming Lab course at **Ben-Gurion University of the Negev**
-> [SPL1 — Settlement Simulation](https://github.com/Nitay321/SPL25-Assignment1) · [SPL2 — Concurrent Microservices](https://github.com/Nitay321/SPL_project_2) · [SPL3 — Real-Time Messaging System](https://github.com/Nitay321/SPL3)
+> [SPL1 — Settlement Simulation](https://github.com/Nitay321/SPL1) · [SPL2 — Concurrent Microservices](https://github.com/Nitay321/SPL2) · [SPL3 — Real-Time Messaging System](https://github.com/Nitay321/SPL3)
 
 An object-oriented discrete simulation engine written in modern C++, modeling municipal infrastructure development across tiered settlements (Villages, Cities, Metropolises). Implements the **Strategy** and **Command** design patterns for pluggable construction policies, transactional action execution, and full in-memory state snapshot and rollback mechanics.
 
